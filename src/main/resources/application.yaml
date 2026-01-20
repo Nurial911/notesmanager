@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: notesmanager
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notes?createDatabaseIfNotExist=true
+    username: postgres
+    password: nurali2006
