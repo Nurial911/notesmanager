@@ -2,7 +2,6 @@ package crud.app.notesmanager.controllers;
 
 import crud.app.notesmanager.dtos.AuthorRequest;
 import crud.app.notesmanager.dtos.AuthorResponse;
-import crud.app.notesmanager.entities.Author;
 import crud.app.notesmanager.services.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +34,14 @@ public class AuthorController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<AuthorResponse> getAuthorById(@PathVariable Integer id) {
+        var author = authorService.getAuthorById(id);
+        if (author == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(author);
     }
 }

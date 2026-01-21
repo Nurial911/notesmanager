@@ -2,7 +2,6 @@ package crud.app.notesmanager.services.impl;
 
 import crud.app.notesmanager.dtos.AuthorRequest;
 import crud.app.notesmanager.dtos.AuthorResponse;
-import crud.app.notesmanager.entities.Author;
 import crud.app.notesmanager.mappers.AuthorMapper;
 import crud.app.notesmanager.repositories.AuthorRepository;
 import crud.app.notesmanager.services.AuthorService;
@@ -35,5 +34,13 @@ public class AuthorServiceImpl implements AuthorService {
         }
         authorRepository.delete(author);
         return true;
+    }
+
+    public AuthorResponse getAuthorById(Integer id) {
+        var author = authorRepository.findById(id).orElse(null);
+        if (author == null){
+            return null;
+        }
+        return authorMapper.entityToDto(author);
     }
 }
