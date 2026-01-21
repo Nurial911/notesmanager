@@ -12,4 +12,5 @@ public interface NoteService {
     public NoteResponse createNote(CreateNoteRequest createNoteRequest);
 
     public NoteResponse updateNote(UpdateNoteRequest updateNoteRequest, Long id);
+    public boolean deleteNote(Long id);
 }

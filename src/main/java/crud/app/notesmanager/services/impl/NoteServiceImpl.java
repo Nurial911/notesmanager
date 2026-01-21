@@ -41,4 +41,13 @@ public class NoteServiceImpl implements NoteService {
         var updatedNote = noteRepository.save(note);
         return noteMapper.entityToDto(updatedNote);
     }
+
+    public boolean deleteNote(Long id) {
+        var  note = noteRepository.findById(id).orElse(null);
+        if (note == null) {
+            return false;
+        }
+        noteRepository.delete(note);
+        return true;
+    }
 }

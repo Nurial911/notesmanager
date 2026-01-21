@@ -50,4 +50,14 @@ public class NoteController {
         }
         return ResponseEntity.ok().body(updatedNote);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
+        var deletedNote = noteService.deleteNote(id);
+        if (deletedNote){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
