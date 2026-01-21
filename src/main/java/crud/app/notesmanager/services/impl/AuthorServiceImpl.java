@@ -43,4 +43,14 @@ public class AuthorServiceImpl implements AuthorService {
         }
         return authorMapper.entityToDto(author);
     }
+
+    public AuthorResponse updateAuthor(Integer id, AuthorRequest authorRequest) {
+        var authorToUpdate = authorRepository.findById(id).orElse(null);
+        if (authorToUpdate == null){
+            return null;
+        }
+        authorMapper.updateAuthor(authorRequest, authorToUpdate);
+        var updatedAuthor = authorRepository.save(authorToUpdate);
+        return authorMapper.entityToDto(updatedAuthor);
+    }
 }

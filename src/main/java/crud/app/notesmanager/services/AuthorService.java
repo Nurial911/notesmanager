@@ -2,7 +2,6 @@ package crud.app.notesmanager.services;
 
 import crud.app.notesmanager.dtos.AuthorRequest;
 import crud.app.notesmanager.dtos.AuthorResponse;
-import crud.app.notesmanager.entities.Author;
 
 public interface AuthorService {
     Iterable<AuthorResponse> getAuthors();
@@ -12,4 +11,6 @@ public interface AuthorService {
     boolean deleteAuthor(Integer id);
 
     AuthorResponse getAuthorById(Integer id);
+
+    AuthorResponse updateAuthor(Integer id, AuthorRequest authorRequest);
 }

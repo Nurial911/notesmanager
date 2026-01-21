@@ -44,4 +44,13 @@ public class AuthorController {
         }
         return ResponseEntity.ok().body(author);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<AuthorResponse> updateAuthor(@PathVariable Integer id, @RequestBody AuthorRequest authorRequest) {
+        var updatedAuthor = authorService.updateAuthor(id, authorRequest);
+        if (updatedAuthor == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(updatedAuthor);
+    }
 }
