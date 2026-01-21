@@ -27,4 +27,13 @@ public class AuthorServiceImpl implements AuthorService {
         var savedAuthor = authorRepository.save(author);
         return authorMapper.entityToDto(savedAuthor);
     }
+
+    public boolean deleteAuthor(Integer id) {
+        var author =  authorRepository.findById(id).orElse(null);
+        if(author == null){
+            return false;
+        }
+        authorRepository.delete(author);
+        return true;
+    }
 }

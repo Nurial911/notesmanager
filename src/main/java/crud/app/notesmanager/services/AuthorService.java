@@ -8,4 +8,6 @@ public interface AuthorService {
     Iterable<AuthorResponse> getAuthors();
 
     AuthorResponse createAuthor(AuthorRequest authorRequest);
+
+    boolean deleteAuthor(Integer id);
 }

@@ -26,4 +26,14 @@ public class AuthorController {
         var uri =  uriBuilder.path("/authors/{id}").buildAndExpand(createdAuthor.getId()).toUri();
         return ResponseEntity.created(uri).body(createdAuthor);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteAuthor(@PathVariable Integer id) {
+        var deletedAuthor = authorService.deleteAuthor(id);
+        if (deletedAuthor){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
