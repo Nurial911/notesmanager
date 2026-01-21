@@ -3,6 +3,9 @@ package crud.app.notesmanager.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "authors")
 @Data
@@ -17,4 +20,7 @@ public class Author {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "author")
+    private List<Note> notes = new ArrayList<>();
 }

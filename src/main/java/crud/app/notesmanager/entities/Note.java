@@ -28,6 +28,9 @@ public class Note {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private Author author;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
