@@ -2,6 +2,7 @@ package crud.app.notesmanager.controllers;
 
 import crud.app.notesmanager.dtos.CreateNoteRequest;
 import crud.app.notesmanager.dtos.NoteResponse;
+import crud.app.notesmanager.dtos.UpdateNoteRequest;
 import crud.app.notesmanager.services.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,17 @@ public class NoteController {
         var savedNote = noteService.createNote(createNoteRequest);
         var uri = uriBuilder.path("/api/notes/{id}").buildAndExpand(savedNote.getId()).toUri();
         return ResponseEntity.created(uri).body(savedNote);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<NoteResponse> updateNote(
+            @PathVariable Long id,
+            @RequestBody UpdateNoteRequest updateNoteRequest
+    ){
+        var updatedNote = noteService.updateNote(updateNoteRequest, id);
+        if (updatedNote == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(updatedNote);
     }
 }

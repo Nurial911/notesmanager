@@ -2,6 +2,7 @@ package crud.app.notesmanager.services.impl;
 
 import crud.app.notesmanager.dtos.CreateNoteRequest;
 import crud.app.notesmanager.dtos.NoteResponse;
+import crud.app.notesmanager.dtos.UpdateNoteRequest;
 import crud.app.notesmanager.mappers.NoteMapper;
 import crud.app.notesmanager.repositories.NoteRepository;
 import crud.app.notesmanager.services.NoteService;
@@ -29,5 +30,15 @@ public class NoteServiceImpl implements NoteService {
         var note = noteMapper.dtoToEntity(createNoteRequest);
         var savedNote = noteRepository.save(note); // savedNote has id and timestamps while note doesn't
         return noteMapper.entityToDto(savedNote);
+    }
+
+    public NoteResponse updateNote(UpdateNoteRequest updateNoteRequest, Long id) {
+        var note = noteRepository.findById(id).orElse(null);
+        if (note == null) {
+            return null;
+        }
+        noteMapper.updateNote(updateNoteRequest, note);
+        var updatedNote = noteRepository.save(note);
+        return noteMapper.entityToDto(updatedNote);
     }
 }
