@@ -5,12 +5,13 @@ import crud.app.notesmanager.dtos.NoteResponse;
 import crud.app.notesmanager.dtos.UpdateNoteRequest;
 
 public interface NoteService {
-    public Iterable<NoteResponse> getAllNotes();
+    Iterable<NoteResponse> getAllNotes();
 
-    public NoteResponse getNoteById(Long id);
+    NoteResponse getNoteById(Long id);
 
-    public NoteResponse createNote(CreateNoteRequest createNoteRequest);
+    NoteResponse createNote(CreateNoteRequest createNoteRequest);
 
-    public NoteResponse updateNote(UpdateNoteRequest updateNoteRequest, Long id);
-    public boolean deleteNote(Long id);
+    NoteResponse updateNote(UpdateNoteRequest updateNoteRequest, Long id);
+
+    boolean deleteNote(Long id);
 }
