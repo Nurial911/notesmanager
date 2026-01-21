@@ -19,4 +19,8 @@ public class NoteServiceImpl implements NoteService {
                 .map(noteMapper::entityToDto) // .map(note -> noteMapper.entityToDto(note))
                 .toList();
     }
+
+    public NoteResponse getNoteById(Long id) {
+        return noteMapper.entityToDto(noteRepository.findById(id).orElse(null));
+    }
 }
