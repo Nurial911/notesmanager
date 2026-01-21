@@ -1,13 +1,12 @@
 package crud.app.notesmanager.controllers;
 
+import crud.app.notesmanager.dtos.CreateNoteRequest;
 import crud.app.notesmanager.dtos.NoteResponse;
 import crud.app.notesmanager.services.NoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/notes")
@@ -27,5 +26,15 @@ public class NoteController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(note);
+    }
+
+    @PostMapping
+    public ResponseEntity<NoteResponse> createNote(
+            @RequestBody CreateNoteRequest createNoteRequest,
+            UriComponentsBuilder uriBuilder
+    ) {
+        var savedNote = noteService.createNote(createNoteRequest);
+        var uri = uriBuilder.path("/api/notes/{id}").buildAndExpand(savedNote.getId()).toUri();
+        return ResponseEntity.created(uri).body(savedNote);
     }
 }
