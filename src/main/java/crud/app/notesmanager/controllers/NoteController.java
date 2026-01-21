@@ -1,7 +1,9 @@
 package crud.app.notesmanager.controllers;
 
+import crud.app.notesmanager.dtos.NoteResponse;
 import crud.app.notesmanager.services.NoteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,4 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class NoteController {
     private final NoteService noteService;
+
+    @GetMapping
+    public Iterable<NoteResponse> getAllNotes() {
+        return noteService.getAllNotes();
+    }
 }
