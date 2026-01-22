@@ -28,6 +28,14 @@ public class NoteServiceImpl implements NoteService {
                 .toList();
     }
 
+    public Iterable<NoteResponse> getAllNotesByAuthorId(Integer authorId) {
+        List<Note> notes = noteRepository.findAllByAuthorId(authorId);
+        return notes
+                .stream()
+                .map(noteMapper::entityToDto)
+                .toList();
+    }
+
     public NoteResponse getNoteById(Long id) {
         return noteMapper.entityToDto(noteRepository.findById(id).orElse(null));
     }

@@ -7,6 +7,8 @@ import crud.app.notesmanager.dtos.UpdateNoteRequest;
 public interface NoteService {
     Iterable<NoteResponse> getAllNotes();
 
+    Iterable<NoteResponse> getAllNotesByAuthorId(Integer authorId);
+
     NoteResponse getNoteById(Long id);
 
     NoteResponse createNote(CreateNoteRequest createNoteRequest);

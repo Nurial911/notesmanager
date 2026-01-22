@@ -11,4 +11,7 @@ public interface NoteRepository extends JpaRepository<Note, Long> {
     @EntityGraph(attributePaths = "author")
     @Query("SELECT n FROM Note n")
     List<Note> findAllWithAuthors();
+
+    @EntityGraph(attributePaths = "author")
+    List<Note> findAllByAuthorId(Integer id);
 }
