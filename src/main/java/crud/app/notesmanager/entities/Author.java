@@ -1,7 +1,7 @@
 package crud.app.notesmanager.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,4 +11,5 @@ public class NoteResponse {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer authorId;
 }

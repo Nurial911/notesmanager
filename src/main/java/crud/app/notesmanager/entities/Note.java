@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "notes")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Note {
     @Id
     @Column(name = "id")

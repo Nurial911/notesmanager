@@ -35,6 +35,9 @@ public class NoteController {
             UriComponentsBuilder uriBuilder
     ) {
         var savedNote = noteService.createNote(createNoteRequest);
+        if (savedNote == null) {
+            return ResponseEntity.badRequest().build();
+        }
         var uri = uriBuilder.path("/api/notes/{id}").buildAndExpand(savedNote.getId()).toUri();
         return ResponseEntity.created(uri).body(savedNote);
     }

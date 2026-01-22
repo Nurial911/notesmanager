@@ -10,6 +10,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface NoteMapper {
+    @Mapping(source = "author.id", target = "authorId")
     NoteResponse entityToDto(Note note);
 
     @Mapping(target = "id", ignore = true) // id is generated
