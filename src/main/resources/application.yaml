@@ -5,3 +5,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/notes?createDatabaseIfNotExist=true
     username: postgres
     password: nurali2006
+  jwt:
+    secret: super-secret-key-12345678910111213super-secret-key-12345678910111213
+  jpa:
+    hibernate:
+      ddl-auto: update
