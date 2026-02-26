@@ -1,49 +1,42 @@
 package crud.app.notesmanager.security.jwt;
 
+import crud.app.notesmanager.config.JwtConfig;
 import crud.app.notesmanager.security.user.User;
-import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+@AllArgsConstructor
 @Service
 public class JwtService {
-    @Value("${spring.jwt.secret}")
-    private String secret;
+    private final JwtConfig jwtConfig;
 
-    private final long expiration = 24*60*60*1000;
-
-    public String generateToken(User user) {
-        return Jwts.builder()
+    public Jwt generateToken(User user) {
+        var token = Jwts.builder()
                 .subject(user.getEmail())
                 .claim("role", user.getRole().name())
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
+                .expiration(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpiration()))
+                .signWith(Keys.hmacShaKeyFor(jwtConfig.getSecret().getBytes()))
                 .compact();
+        return parse(token);
     }
 
-    private Claims getClaims(String token) {
-        return Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(secret.getBytes()))
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
-    public String getEmailFromToken(String token){
-        return getClaims(token).getSubject();
-    }
-
-    public boolean isTokenValid(String token, User user) {
-        return getEmailFromToken(token).equals(user.getEmail()) && !isExpired(token);
-    }
-
-    private boolean isExpired(String token) {
-        return getClaims(token).getExpiration().before(new Date());
+    public Jwt parse(String token){
+        try {
+            var key = jwtConfig.getSecretKey();
+            var claims = Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return new Jwt(claims, key);
+        } catch (JwtException e) {
+            return null;
+        }
     }
 }

@@ -7,6 +7,7 @@ spring:
     password: nurali2006
   jwt:
     secret: super-secret-key-12345678910111213super-secret-key-12345678910111213
+    tokenExpiration: 86400
   jpa:
     hibernate:
       ddl-auto: update

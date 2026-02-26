@@ -1,7 +1,6 @@
 package crud.app.notesmanager.security.filters;
 
 import crud.app.notesmanager.security.jwt.JwtService;
-import crud.app.notesmanager.security.user.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,18 +35,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        var jwt = authHeader.substring(7);
-        var email = jwtService.getEmailFromToken(jwt);
+        var token = authHeader.substring(7);
+        var jwt = jwtService.parse(token);
+        if (jwt == null || jwt.isExpired()) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        var email = jwt.getEmail();
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-            if (jwtService.isTokenValid(jwt, (User) userDetails)) {
-                var authToken = new UsernamePasswordAuthenticationToken(
-                                userDetails,
-                                null,
-                                userDetails.getAuthorities()
-                        );
+            var authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities());
 
                 authToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
@@ -55,9 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-        }
-
         filterChain.doFilter(request, response);
-
     }
 }
+
