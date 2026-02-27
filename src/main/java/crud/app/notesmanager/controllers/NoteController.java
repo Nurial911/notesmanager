@@ -19,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Tag(name = "Notes", description = "Operations related to notes management")
 @RequestMapping("/api/notes")
 public interface NoteController {
-    @Operation(summary = "Get all notes", description = "Retrieves a list of all notes, optionally filtered by author ID")
+    @Operation(summary = "Get all notes", description = "Retrieves a list of all notes")
     @ApiResponses(
             @ApiResponse(
                     responseCode = "200",
@@ -31,7 +31,7 @@ public interface NoteController {
             )
     )
     @GetMapping
-    public Iterable<NoteResponse> getAllNotes(@Parameter(description = "ID of the author", example = "5") @RequestParam(required = false) Integer authorId);
+    public Iterable<NoteResponse> getAllNotes();
 
     @Operation(summary = "Get a note by ID", description = "Retrieves a note with an ID")
     @ApiResponses({
@@ -41,7 +41,7 @@ public interface NoteController {
     @GetMapping("{id}")
     public ResponseEntity<NoteResponse> getNoteById(@Parameter(description = "ID of the note to get", example = "67", required = true) @PathVariable Long id);
 
-    @Operation(summary = "Create a new note", description = "Creates a new note and associates it with an existing author")
+    @Operation(summary = "Create a new note", description = "Creates a new note")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Note created"),
             @ApiResponse(responseCode = "400", description = "Author not found")

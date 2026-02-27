@@ -15,12 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class NoteControllerImpl implements NoteController {
     private final NoteService noteService;
 
-    public Iterable<NoteResponse> getAllNotes(Integer authorId) {
-        if (authorId == null) {
-            return noteService.getAllNotes();
-        } else {
-            return noteService.getAllNotesByAuthorId(authorId);
-        }
+    public Iterable<NoteResponse> getAllNotes() {
+        return noteService.getAllNotes();
     }
 
 
