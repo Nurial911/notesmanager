@@ -3,31 +3,40 @@ package crud.app.notesmanager.security.auth;
 import crud.app.notesmanager.security.jwt.JwtService;
 import crud.app.notesmanager.security.user.User;
 import crud.app.notesmanager.security.user.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
-    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
     @Override
     public String login(
-            @RequestBody LoginRequest loginRequest) {
+            @RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(
+                    loginRequest.getEmail(),
+                    loginRequest.getPassword());
+
+        authToken.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request));
+        authenticationManager.authenticate(authToken);
 
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() ->
                         new BadCredentialsException("Invalid email or password")
                 );
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("Invalid email or password");
-        }
         var token = jwtService.generateToken(user);
 
         return token.toString();
