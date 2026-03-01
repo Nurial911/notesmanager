@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Table(name = "books")
 @Entity
 @Getter
@@ -19,4 +21,11 @@ public class Book {
     private String title;
     @Column(name = "description")
     private String description;
+    @JoinColumn(name = "author_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Author author;
+    @OneToMany(mappedBy = "book")
+    @ToString.Exclude
+    private List<Note> notes;
 }

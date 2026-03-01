@@ -3,6 +3,8 @@ package crud.app.notesmanager.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "authors")
@@ -19,4 +21,7 @@ public class Author {
 
     @Column(name = "email")
     private String email;
+    @ToString.Exclude
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+    private List<Book> books;
 }
