@@ -1,6 +1,7 @@
 package crud.app.notesmanager.security.auth;
 
 import crud.app.notesmanager.security.jwt.JwtService;
+import crud.app.notesmanager.security.user.Role;
 import crud.app.notesmanager.security.user.User;
 import crud.app.notesmanager.security.user.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String login(
@@ -38,6 +41,25 @@ public class AuthServiceImpl implements AuthService {
                 );
 
         var token = jwtService.generateToken(user);
+
+        return token.toString();
+    }
+
+    @Override
+    public String register(
+            @RequestBody RegisterRequest registerRequest, HttpServletRequest request, HttpServletResponse response) {
+        if (userRepository.findByEmail(registerRequest.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email is already registered");
+        }
+
+        User user = new User();
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRole(Role.USER);
+
+        User savedUser = userRepository.save(user);
+
+        var token = jwtService.generateToken(savedUser);
 
         return token.toString();
     }

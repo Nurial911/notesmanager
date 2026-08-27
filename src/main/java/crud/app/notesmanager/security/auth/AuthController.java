@@ -20,4 +20,10 @@ public class AuthController {
         var token = authService.login(loginRequest, request, response);
         return ResponseEntity.ok(token);
     }
+
+    @PostMapping ("/register")
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest, HttpServletRequest request, HttpServletResponse response) {
+        var token = authService.register(registerRequest, request, response);
+        return ResponseEntity.ok(token);
+    }
 }
